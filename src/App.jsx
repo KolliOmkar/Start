@@ -1,56 +1,3 @@
-// FILE: package.json
-
-{
-"name": "homnix",
-"private": true,
-"version": "0.0.0",
-"type": "module",
-"scripts": {
-"dev": "vite",
-"build": "vite build",
-"preview": "vite preview"
-},
-"dependencies": {
-"firebase": "^10.12.2",
-"lucide-react": "^0.400.0",
-"react": "^18.3.1",
-"react-dom": "^18.3.1",
-"react-router-dom": "^6.24.1"
-},
-"devDependencies": {
-"@vitejs/plugin-react": "^4.3.1",
-"autoprefixer": "^10.4.19",
-"postcss": "^8.4.39",
-"tailwindcss": "^3.4.4",
-"vite": "^5.3.1"
-}
-}
-
-// FILE: src/main.jsx
-
-import React from "react";
-import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
-import App from "./App";
-import "./index.css";
-
-ReactDOM.createRoot(document.getElementById("root")).render( <BrowserRouter> <App /> </BrowserRouter>
-);
-
-// FILE: src/index.css
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-body {
-margin: 0;
-font-family: sans-serif;
-background: #f3f4f6;
-}
-
-// FILE: src/App.jsx
-
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { Menu } from "lucide-react";
 import { useEffect } from "react";
@@ -64,18 +11,28 @@ navigate("/login");
 }, 2500);
 }, []);
 
-return ( <div className="h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-700 to-pink-500 text-white"> <h1 className="text-5xl font-bold">HOMNIX</h1> <p className="mt-4 text-lg">
-Trusted Services in Minutes </p> </div>
+return ( <div className="h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-700 to-pink-500 text-white"> <h1 className="text-5xl font-bold">HOMNIX</h1>
+
+```
+  <p className="mt-4 text-lg">
+    Trusted Services in Minutes
+  </p>
+</div>
+```
+
 );
 }
 
 function Login() {
 const navigate = useNavigate();
 
-return ( <div className="h-screen flex items-center justify-center bg-black"> <div className="bg-white/10 backdrop-blur-lg p-8 rounded-3xl w-80 border border-white/20"> <h2 className="text-white text-3xl font-bold mb-6">
-Login </h2>
+return ( <div className="h-screen flex items-center justify-center bg-black"> <div className="bg-white/10 backdrop-blur-lg p-8 rounded-3xl w-80 border border-white/20">
 
 ```
+    <h2 className="text-white text-3xl font-bold mb-6">
+      Login
+    </h2>
+
     <input
       type="text"
       placeholder="Enter Mobile Number"
@@ -88,6 +45,7 @@ Login </h2>
     >
       Send OTP
     </button>
+
   </div>
 </div>
 ```
@@ -96,6 +54,7 @@ Login </h2>
 }
 
 function Home() {
+
 const navigate = useNavigate();
 
 const services = [
@@ -105,14 +64,21 @@ const services = [
 "Electrical"
 ];
 
-return ( <div className="min-h-screen p-4"> <div className="flex justify-between items-center"> <h1 className="text-3xl font-bold text-purple-700">
-HOMNIX </h1>
+return ( <div className="min-h-screen p-4">
 
 ```
+  <div className="flex justify-between items-center">
+
+    <h1 className="text-3xl font-bold text-purple-700">
+      HOMNIX
+    </h1>
+
     <Menu size={30} />
+
   </div>
 
   <div className="bg-gradient-to-r from-purple-600 to-pink-500 text-white p-6 rounded-3xl mt-6">
+
     <h2 className="text-3xl font-bold">
       50% OFF
     </h2>
@@ -120,6 +86,7 @@ HOMNIX </h1>
     <p className="mt-2">
       For New Users
     </p>
+
   </div>
 
   <h2 className="text-2xl font-bold mt-8 mb-4">
@@ -127,12 +94,15 @@ HOMNIX </h1>
   </h2>
 
   <div className="grid grid-cols-2 gap-4">
+
     {services.map((service) => (
+
       <div
         key={service}
         onClick={() => navigate("/booking")}
         className="bg-white rounded-3xl p-5 shadow-lg"
       >
+
         <div className="text-4xl mb-3">
           🛠️
         </div>
@@ -148,9 +118,13 @@ HOMNIX </h1>
         <button className="bg-purple-600 text-white px-4 py-2 rounded-xl mt-4">
           Book Now
         </button>
+
       </div>
+
     ))}
+
   </div>
+
 </div>
 ```
 
@@ -158,12 +132,16 @@ HOMNIX </h1>
 }
 
 function Booking() {
+
 const navigate = useNavigate();
 
-return ( <div className="min-h-screen p-5"> <h1 className="text-3xl font-bold">
-Book Service </h1>
+return ( <div className="min-h-screen p-5">
 
 ```
+  <h1 className="text-3xl font-bold">
+    Book Service
+  </h1>
+
   <input
     placeholder="Enter Address"
     className="w-full p-4 rounded-2xl mt-6 border"
@@ -185,6 +163,7 @@ Book Service </h1>
   >
     Confirm Booking
   </button>
+
 </div>
 ```
 
@@ -192,10 +171,13 @@ Book Service </h1>
 }
 
 function Status() {
-return ( <div className="h-screen flex flex-col items-center justify-center"> <div className="text-6xl animate-bounce">
-🚗 </div>
+return ( <div className="h-screen flex flex-col items-center justify-center">
 
 ```
+  <div className="text-6xl animate-bounce">
+    🚗
+  </div>
+
   <h1 className="text-3xl font-bold text-purple-700 mt-6">
     Professional Assigned
   </h1>
@@ -205,14 +187,19 @@ return ( <div className="h-screen flex flex-col items-center justify-center"> <d
   </p>
 
   <div className="bg-gray-100 p-5 rounded-3xl mt-6 w-80">
+
     <p><b>Name:</b> Ravi Kumar</p>
+
     <p><b>Rating:</b> ⭐ 4.9</p>
+
     <p><b>Phone:</b> +91 9876543210</p>
+
   </div>
 
   <button className="bg-red-500 text-white px-6 py-3 rounded-2xl mt-6">
     Cancel Booking
   </button>
+
 </div>
 ```
 
@@ -220,16 +207,23 @@ return ( <div className="h-screen flex flex-col items-center justify-center"> <d
 }
 
 function Profile() {
-return ( <div className="p-5"> <h1 className="text-3xl font-bold">
-Profile </h1>
+return ( <div className="p-5">
 
 ```
+  <h1 className="text-3xl font-bold">
+    Profile
+  </h1>
+
   <div className="bg-white rounded-3xl p-5 shadow-lg mt-6">
+
     <p><b>Name:</b> Customer</p>
+
     <p className="mt-2">
       <b>Phone:</b> +91 9999999999
     </p>
+
   </div>
+
 </div>
 ```
 
@@ -237,11 +231,15 @@ Profile </h1>
 }
 
 function Admin() {
-return ( <div className="min-h-screen p-5"> <h1 className="text-3xl font-bold text-purple-700">
-Admin Dashboard </h1>
+return ( <div className="min-h-screen p-5">
 
 ```
+  <h1 className="text-3xl font-bold text-purple-700">
+    Admin Dashboard
+  </h1>
+
   <div className="bg-white rounded-3xl p-5 mt-6 shadow-lg">
+
     <h2 className="font-bold text-xl">
       Cleaning Booking
     </h2>
@@ -255,7 +253,9 @@ Admin Dashboard </h1>
     <button className="bg-purple-600 text-white px-5 py-3 rounded-2xl mt-4">
       Assign Worker
     </button>
+
   </div>
+
 </div>
 ```
 
