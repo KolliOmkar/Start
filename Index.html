@@ -1,243 +1,275 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HOMNIX Pro</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial;}
-body{background:#f5f3ff;color:#111;}
+// FILE: package.json
 
-/* SPLASH */
-#splash{height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;background:linear-gradient(180deg,#6d28d9,#ffffff);color:white;}
-#splash h1{font-size:60px;letter-spacing:3px;}
-#splash p{margin-top:10px;font-size:18px;}
-
-/* LOGIN */
-#login{display:none;height:100vh;justify-content:center;align-items:center;background:white;padding:20px;}
-.login-box{width:100%;max-width:400px;background:#fff;padding:30px;border-radius:30px;box-shadow:0 4px 20px rgba(0,0,0,0.08);text-align:center;}
-.login-box h2{color:#6d28d9;margin-bottom:20px;}
-input,textarea,select{width:100%;padding:16px;margin-top:15px;border-radius:16px;border:1px solid #ddd;font-size:16px;}
-button{width:100%;padding:16px;margin-top:15px;border:none;border-radius:16px;background:#6d28d9;color:white;font-size:16px;font-weight:bold;cursor:pointer;}
-
-/* HOME */
-#home{display:none;}
-.topbar{display:flex;justify-content:space-between;align-items:center;padding:20px;background:white;position:sticky;top:0;z-index:100;}
-.topbar .logo{font-size:28px;font-weight:bold;color:#6d28d9;}
-.topbar .hamburger{font-size:28px;cursor:pointer;}
-
-/* PROFILE PANEL */
-#profilePanel{position:fixed;top:0;right:-320px;width:320px;height:100%;background:white;box-shadow:-5px 0 20px rgba(0,0,0,0.1);padding:20px;transition:0.4s;z-index:999;}
-#profilePanel.active{right:0;}
-#profilePanel h2{color:#6d28d9;margin-bottom:10px;}
-.menu-item{margin:12px 0;padding:12px;background:#f5f3ff;border-radius:12px;cursor:pointer;transition:0.2s;}
-.menu-item:hover{background:#e0d7ff;}
-
-/* HERO */
-.hero{background:linear-gradient(135deg,#6d28d9,#9333ea);padding:30px 20px;color:white;border-radius:0 0 30px 30px;}
-.hero h1{font-size:34px;}
-.hero p{margin-top:10px;}
-
-/* SERVICES */
-.services{padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-.card{background:white;padding:25px;border-radius:24px;text-align:center;font-weight:bold;box-shadow:0 4px 18px rgba(0,0,0,0.06);cursor:pointer;transition:0.3s;}
-.card:hover{transform:scale(1.03);}
-.card h4{margin-top:12px;color:#6d28d9;}
-
-/* BOOKING */
-.booking-box{background:white;margin:20px;padding:20px;border-radius:24px;box-shadow:0 4px 18px rgba(0,0,0,0.06);}
-.booking-box h2{color:#6d28d9;margin-bottom:10px;}
-.status{margin-top:20px;padding:16px;border-radius:16px;font-weight:bold;display:none;}
-.status.pending{background:#fef3c7;color:#92400e;}
-.status.completed{background:#dcfce7;color:#166534;}
-.status.cancelled{background:#fee2e2;color:#991b1b;}
-
-/* HISTORY */
-.history{margin:20px;background:white;padding:20px;border-radius:24px;box-shadow:0 4px 18px rgba(0,0,0,0.06);}
-.history-item{padding:15px;border-radius:16px;margin-top:12px;}
-.history-item.completed{background:#dcfce7;}
-.history-item.cancelled{background:#fee2e2;}
-.history-item.pending{background:#fef3c7;}
-
-/* MOBILE */
-@media(max-width:700px){.services{grid-template-columns:1fr 1fr;}.hero h1{font-size:28px;}}
-</style>
-</head>
-<body>
-
-<!-- SPLASH -->
-<div id="splash">
-<h1>HOMNIX</h1>
-<p>© 2026 All Rights Reserved</p>
-</div>
-
-<!-- LOGIN -->
-<div id="login">
-<div class="login-box">
-<h2>Welcome To Homnix</h2>
-<input type="text" id="mobile" placeholder="Enter 10-digit Mobile Number">
-<div id="recaptcha-container"></div>
-<button onclick="sendOTP()">Send OTP</button>
-<input type="text" id="otp" placeholder="Enter OTP" style="display:none;">
-<button onclick="verifyOTP()" style="display:none;">Verify OTP</button>
-<input type="text" id="name" placeholder="Enter Your Name" style="display:none;">
-<button onclick="saveName()" style="display:none;">Save Name</button>
-</div>
-</div>
-
-<!-- HOME -->
-<div id="home">
-<div class="topbar">
-<div class="logo">HOMNIX</div>
-<div class="hamburger" onclick="toggleProfile()">☰</div>
-</div>
-
-<div class="hero">
-<h1>Home Services In Minutes</h1>
-<p>Cleaning • Plumbing • Electrician • Painting</p>
-</div>
-
-<div class="services">
-<div class="card"><h4>🧹 Cleaning</h4></div>
-<div class="card"><h4>🚿 Plumbing</h4></div>
-<div class="card"><h4>💡 Electrician</h4></div>
-<div class="card"><h4>🎨 Painting</h4></div>
-</div>
-
-<div class="booking-box">
-<h2>Book Service</h2>
-<select id="service">
-<option>Cleaning</option>
-<option>Plumbing</option>
-<option>Electrician</option>
-<option>Painting</option>
-</select>
-<button onclick="getLocation()">Use Current Location</button>
-<input type="text" id="location" placeholder="Enter Address">
-<textarea id="issue" rows="5" placeholder="Describe Your Issue"></textarea>
-<button onclick="bookService()">Confirm Booking</button>
-<div class="status" id="bookingStatus">✅ Booking Confirmed</div>
-</div>
-
-<div class="history">
-<h2>Booking History</h2>
-<div id="historyList"></div>
-</div>
-</div>
-
-<!-- PROFILE PANEL -->
-<div id="profilePanel">
-<h2>Customer Profile</h2>
-<div class="menu-item" id="profileName">Name: -</div>
-<div class="menu-item" id="profileMobile">Mobile: -</div>
-<div class="menu-item" id="bookingHistory">Booking History</div>
-<div class="menu-item" onclick="cancelBooking()">Cancel Booking</div>
-<div class="menu-item" onclick="logout()">Logout</div>
-</div>
-
-<!-- FIREBASE -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
-
-/* FIREBASE CONFIG */
-const firebaseConfig = {
-apiKey: "PASTE_API_KEY",
-authDomain: "PASTE_AUTH_DOMAIN",
-projectId: "PASTE_PROJECT_ID",
-storageBucket: "PASTE_STORAGE_BUCKET",
-messagingSenderId: "PASTE_SENDER_ID",
-appId: "PASTE_APP_ID"
-};
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-/* SPLASH */
-setTimeout(()=>{document.getElementById("splash").style.display="none";document.getElementById("login").style.display="flex";},2500);
-
-/* RECAPTCHA */
-window.recaptchaVerifier = new RecaptchaVerifier(auth,"recaptcha-container",{size: "normal"});
-
-/* SEND OTP */
-window.sendOTP = async function(){
-const mobileInput = document.getElementById("mobile").value.trim();
-if(!/^[0-9]{10}$/.test(mobileInput)){alert("Enter valid 10-digit number");return;}
-const phone = "+91"+mobileInput;
-try{
-const confirmationResult = await signInWithPhoneNumber(auth,phone,window.recaptchaVerifier);
-window.confirmationResult = confirmationResult;
-alert("OTP Sent to "+phone);
-document.getElementById("otp").style.display="block";
-document.querySelector("#login button[onclick='verifyOTP()']").style.display="block";
-}catch(e){alert("Error sending OTP: "+e.message);}
-};
-
-/* VERIFY OTP */
-window.verifyOTP = async function(){
-const otp = document.getElementById("otp").value.trim();
-if(!otp){alert("Enter OTP");return;}
-try{
-await window.confirmationResult.confirm(otp);
-document.getElementById("otp").style.display="none";
-document.querySelector("#login button[onclick='verifyOTP()']").style.display="none";
-document.getElementById("name").style.display="block";
-document.querySelector("#login button[onclick='saveName()']").style.display="block";
-}catch(e){alert("Invalid OTP");}
-};
-
-/* SAVE NAME */
-window.saveName = async function(){
-const name = document.getElementById("name").value.trim();
-if(!name){alert("Enter your name");return;}
-const mobile = document.getElementById("mobile").value.trim();
-await addDoc(collection(db,"users"),{name,mobile});
-document.getElementById("login").style.display="none";
-document.getElementById("home").style.display="block";
-document.getElementById("profileName").innerText="Name: "+name;
-document.getElementById("profileMobile").innerText="Mobile: "+mobile;
-loadBookings();
-};
-
-/* LOCATION */
-window.getLocation = function(){
-if(navigator.geolocation){navigator.geolocation.getCurrentPosition(pos=>{document.getElementById("location").value=pos.coords.latitude+","+pos.coords.longitude;},()=>{alert("Location Permission Denied");});}
-};
-
-/* BOOK SERVICE */
-window.bookService = async function(){
-const service = document.getElementById("service").value;
-const location = document.getElementById("location").value.trim();
-const issue = document.getElementById("issue").value.trim();
-if(!service||!location||!issue){alert("Fill all fields");return;}
-await addDoc(collection(db,"bookings"),{service,location,issue,status:"Pending",time:new Date()});
-const statusDiv = document.getElementById("bookingStatus");
-statusDiv.innerText="✅ Booking Confirmed";
-statusDiv.className="status pending";
-statusDiv.style.display="block";
-loadBookings();
-};
-
-/* LOAD BOOKINGS */
-async function loadBookings(){
-const history=document.getElementById("historyList");
-history.innerHTML="";
-const querySnapshot = await getDocs(collection(db,"bookings"));
-querySnapshot.forEach(docSnap=>{
-const data = docSnap.data();
-let statusClass="pending";
-if(data.status==="Completed")statusClass="completed";
-if(data.status==="Cancelled")statusClass="cancelled";
-history.innerHTML+=`<div class="history-item ${statusClass}"><b>${data.service}</b><br>${data.location}<br>Status: ${data.status}<br>Time: ${new Date(data.time?.seconds*1000||Date.now()).toLocaleString()}</div>`;
-});
+{
+"name": "homnix",
+"private": true,
+"version": "0.0.0",
+"type": "module",
+"scripts": {
+"dev": "vite",
+"build": "vite build",
+"preview": "vite preview"
+},
+"dependencies": {
+"firebase": "^10.12.2",
+"lucide-react": "^0.400.0",
+"react": "^18.3.1",
+"react-dom": "^18.3.1",
+"react-router-dom": "^6.24.1"
+},
+"devDependencies": {
+"@vitejs/plugin-react": "^4.3.1",
+"autoprefixer": "^10.4.19",
+"postcss": "^8.4.39",
+"tailwindcss": "^3.4.4",
+"vite": "^5.3.1"
+}
 }
 
-/* PROFILE PANEL */
-window.toggleProfile=function(){document.getElementById("profilePanel").classList.toggle("active");}
-window.logout=function(){location.reload();}
-window.cancelBooking=function(){alert("Select a booking from history to cancel"); /* Later add Firebase update */}
-</script>
+// FILE: src/main.jsx
 
-</body>
-</html>
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
+import App from "./App";
+import "./index.css";
+
+ReactDOM.createRoot(document.getElementById("root")).render( <BrowserRouter> <App /> </BrowserRouter>
+);
+
+// FILE: src/index.css
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+margin: 0;
+font-family: sans-serif;
+background: #f3f4f6;
+}
+
+// FILE: src/App.jsx
+
+import { Routes, Route, useNavigate } from "react-router-dom";
+import { Menu } from "lucide-react";
+import { useEffect } from "react";
+
+function Splash() {
+const navigate = useNavigate();
+
+useEffect(() => {
+setTimeout(() => {
+navigate("/login");
+}, 2500);
+}, []);
+
+return ( <div className="h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-700 to-pink-500 text-white"> <h1 className="text-5xl font-bold">HOMNIX</h1> <p className="mt-4 text-lg">
+Trusted Services in Minutes </p> </div>
+);
+}
+
+function Login() {
+const navigate = useNavigate();
+
+return ( <div className="h-screen flex items-center justify-center bg-black"> <div className="bg-white/10 backdrop-blur-lg p-8 rounded-3xl w-80 border border-white/20"> <h2 className="text-white text-3xl font-bold mb-6">
+Login </h2>
+
+```
+    <input
+      type="text"
+      placeholder="Enter Mobile Number"
+      className="w-full p-4 rounded-2xl mb-4 outline-none"
+    />
+
+    <button
+      onClick={() => navigate("/home")}
+      className="w-full bg-purple-600 text-white p-4 rounded-2xl"
+    >
+      Send OTP
+    </button>
+  </div>
+</div>
+```
+
+);
+}
+
+function Home() {
+const navigate = useNavigate();
+
+const services = [
+"Cleaning",
+"AC Repair",
+"Plumbing",
+"Electrical"
+];
+
+return ( <div className="min-h-screen p-4"> <div className="flex justify-between items-center"> <h1 className="text-3xl font-bold text-purple-700">
+HOMNIX </h1>
+
+```
+    <Menu size={30} />
+  </div>
+
+  <div className="bg-gradient-to-r from-purple-600 to-pink-500 text-white p-6 rounded-3xl mt-6">
+    <h2 className="text-3xl font-bold">
+      50% OFF
+    </h2>
+
+    <p className="mt-2">
+      For New Users
+    </p>
+  </div>
+
+  <h2 className="text-2xl font-bold mt-8 mb-4">
+    Services
+  </h2>
+
+  <div className="grid grid-cols-2 gap-4">
+    {services.map((service) => (
+      <div
+        key={service}
+        onClick={() => navigate("/booking")}
+        className="bg-white rounded-3xl p-5 shadow-lg"
+      >
+        <div className="text-4xl mb-3">
+          🛠️
+        </div>
+
+        <h3 className="font-bold text-lg">
+          {service}
+        </h3>
+
+        <p className="text-gray-500 mt-1">
+          Starting ₹199
+        </p>
+
+        <button className="bg-purple-600 text-white px-4 py-2 rounded-xl mt-4">
+          Book Now
+        </button>
+      </div>
+    ))}
+  </div>
+</div>
+```
+
+);
+}
+
+function Booking() {
+const navigate = useNavigate();
+
+return ( <div className="min-h-screen p-5"> <h1 className="text-3xl font-bold">
+Book Service </h1>
+
+```
+  <input
+    placeholder="Enter Address"
+    className="w-full p-4 rounded-2xl mt-6 border"
+  />
+
+  <input
+    type="date"
+    className="w-full p-4 rounded-2xl mt-4 border"
+  />
+
+  <input
+    type="time"
+    className="w-full p-4 rounded-2xl mt-4 border"
+  />
+
+  <button
+    onClick={() => navigate("/status")}
+    className="w-full bg-purple-600 text-white p-4 rounded-2xl mt-6"
+  >
+    Confirm Booking
+  </button>
+</div>
+```
+
+);
+}
+
+function Status() {
+return ( <div className="h-screen flex flex-col items-center justify-center"> <div className="text-6xl animate-bounce">
+🚗 </div>
+
+```
+  <h1 className="text-3xl font-bold text-purple-700 mt-6">
+    Professional Assigned
+  </h1>
+
+  <p className="mt-4">
+    Worker arriving in 20 mins
+  </p>
+
+  <div className="bg-gray-100 p-5 rounded-3xl mt-6 w-80">
+    <p><b>Name:</b> Ravi Kumar</p>
+    <p><b>Rating:</b> ⭐ 4.9</p>
+    <p><b>Phone:</b> +91 9876543210</p>
+  </div>
+
+  <button className="bg-red-500 text-white px-6 py-3 rounded-2xl mt-6">
+    Cancel Booking
+  </button>
+</div>
+```
+
+);
+}
+
+function Profile() {
+return ( <div className="p-5"> <h1 className="text-3xl font-bold">
+Profile </h1>
+
+```
+  <div className="bg-white rounded-3xl p-5 shadow-lg mt-6">
+    <p><b>Name:</b> Customer</p>
+    <p className="mt-2">
+      <b>Phone:</b> +91 9999999999
+    </p>
+  </div>
+</div>
+```
+
+);
+}
+
+function Admin() {
+return ( <div className="min-h-screen p-5"> <h1 className="text-3xl font-bold text-purple-700">
+Admin Dashboard </h1>
+
+```
+  <div className="bg-white rounded-3xl p-5 mt-6 shadow-lg">
+    <h2 className="font-bold text-xl">
+      Cleaning Booking
+    </h2>
+
+    <p className="mt-2">
+      Customer: Rahul
+    </p>
+
+    <p>Status: Pending</p>
+
+    <button className="bg-purple-600 text-white px-5 py-3 rounded-2xl mt-4">
+      Assign Worker
+    </button>
+  </div>
+</div>
+```
+
+);
+}
+
+export default function App() {
+return ( <Routes>
+<Route path="/" element={<Splash />} />
+<Route path="/login" element={<Login />} />
+<Route path="/home" element={<Home />} />
+<Route path="/booking" element={<Booking />} />
+<Route path="/status" element={<Status />} />
+<Route path="/profile" element={<Profile />} />
+<Route path="/admin" element={<Admin />} /> </Routes>
+);
+}
